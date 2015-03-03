@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -40,7 +40,7 @@ namespace OpenXcom
 		RuleCraft *craft = _game->getRuleset()->getCraft(defs->id);
 
 		// add screen elements
-		_txtTitle = new Text(155, 32, 5, 24);
+		_txtTitle = new Text(210, 32, 5, 24);
 
 		// Set palette
 		setPalette("PAL_UFOPAEDIA");

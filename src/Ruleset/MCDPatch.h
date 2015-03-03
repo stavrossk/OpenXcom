@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -31,8 +31,8 @@ class MapDataSet;
 class MCDPatch
 {
 private:
-	std::vector<std::pair<size_t, int> > _bigWalls, _TUWalks, _TUFlys, _TUSlides, _deathTiles, _terrainHeight, _specialTypes, _armors, _explosives, _flammabilities, _fuels, _HEBlocks;
-	std::vector<std::pair<size_t, bool> > _noFloors;
+	std::vector<std::pair<size_t, int> > _bigWalls, _TUWalks, _TUFlys, _TUSlides, _deathTiles, _terrainHeight, _specialTypes, _armors, _explosives, _flammabilities, _fuels, _HEBlocks, _footstepSounds;
+	std::vector<std::pair<size_t, bool> > _noFloors, _stopLOSses;
 	std::vector<std::pair<size_t, std::vector<int> > > _LOFTS;
 public:
 	/// Creates an MCD Patch.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -69,8 +69,7 @@ UnitDieBState::UnitDieBState(BattlescapeGame *parent, BattleUnit *unit, ItemDama
 			_parent->getMap()->setUnitDying(true);
 		}
 		_parent->setStateInterval(BattlescapeState::DEFAULT_ANIM_SPEED);
-		_originalDir = _unit->getDirection();
-		if (_originalDir != 3)
+		if (_unit->getDirection() != 3)
 		{
 			_parent->setStateInterval(BattlescapeState::DEFAULT_ANIM_SPEED / 3);
 		}
@@ -138,6 +137,13 @@ void UnitDieBState::think()
 		{
 			playDeathSound();
 		}
+		if (_unit->getRespawn())
+		{
+			while (_unit->getStatus() == STATUS_COLLAPSING)
+			{
+				_unit->keepFalling();
+			}
+		}
 	}
 
 	if (_unit->isOut())
@@ -146,7 +152,7 @@ void UnitDieBState::think()
 		{
 			playDeathSound();
 		}
-		if (_unit->getStatus() == STATUS_UNCONSCIOUS && _unit->getSpecialAbility() == SPECAB_EXPLODEONDEATH)
+		if (_unit->getStatus() == STATUS_UNCONSCIOUS && (_unit->getSpecialAbility() == SPECAB_EXPLODEONDEATH || _unit->getSpecialAbility() == SPECAB_BURN_AND_EXPLODE))
 		{
 			_unit->instaKill();
 		}
@@ -159,7 +165,6 @@ void UnitDieBState::think()
 		{
 			// converts the dead zombie to a chryssalid
 			BattleUnit *newUnit = _parent->convertUnit(_unit, _unit->getSpawnUnit());
-			newUnit->lookAt(_originalDir);
 		}
 		else
 		{
@@ -294,17 +299,20 @@ void UnitDieBState::convertUnitToCorpse()
  */
 void UnitDieBState::playDeathSound()
 {
-	if ((_unit->getType() == "SOLDIER" && _unit->getGender() == GENDER_MALE) || _unit->getType() == "MALE_CIVILIAN")
+	if (_unit->getDeathSound() == -1)
 	{
-		_parent->getResourcePack()->getSound("BATTLE.CAT", RNG::generate(41,43))->play();
-	}
-	else if ((_unit->getType() == "SOLDIER" && _unit->getGender() == GENDER_FEMALE) || _unit->getType() == "FEMALE_CIVILIAN")
-	{
-		_parent->getResourcePack()->getSound("BATTLE.CAT", RNG::generate(44,46))->play();
+		if (_unit->getGender() == GENDER_MALE)
+		{
+			_parent->getResourcePack()->getSoundByDepth(_parent->getDepth(), ResourcePack::MALE_SCREAM[RNG::generate(0, 2)])->play(-1, _parent->getMap()->getSoundAngle(_unit->getPosition()));
+		}
+		else
+		{
+			_parent->getResourcePack()->getSoundByDepth(_parent->getDepth(), ResourcePack::FEMALE_SCREAM[RNG::generate(0, 2)])->play(-1, _parent->getMap()->getSoundAngle(_unit->getPosition()));
+		}
 	}
 	else
 	{
-		_parent->getResourcePack()->getSound("BATTLE.CAT", _unit->getDeathSound())->play();
+		_parent->getResourcePack()->getSoundByDepth(_parent->getDepth(), _unit->getDeathSound())->play(-1, _parent->getMap()->getSoundAngle(_unit->getPosition()));
 	}
 }
 

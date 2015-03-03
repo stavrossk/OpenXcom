@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -44,7 +44,7 @@ namespace YAML
 
 		static bool decode(const Node& node, OpenXcom::TrajectoryWaypoint& rhs)
 		{
-			if(!node.IsSequence() || node.size() != 3)
+			if (!node.IsSequence() || node.size() != 3)
 				return false;
 
 			rhs.zone = node[0].as<int>();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -49,7 +49,7 @@ private:
 	void setAssignedScientist();
 	ResearchProject * _project;
 	RuleResearch * _rule;
-	void buildUi ();
+	void buildUi();
 	Timer *_timerMore, *_timerLess;
 	InteractiveSurface *_surfaceScientists;
 public:

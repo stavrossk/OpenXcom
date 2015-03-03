@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -51,11 +51,12 @@ private:
 	size_t _sel, _itemOffset;
 	int _total, _pQty, _cQty;
 	double _iQty;
+	Uint8 _ammoColor;
 	Timer *_timerInc, *_timerDec;
 	/// Gets selected price.
 	int getPrice();
 	/// Is it excluded in the options file?
-	bool isExcluded(std::string item);
+	bool isExcluded(const std::string &item);
 public:
 	/// Creates the Purchase state.
 	PurchaseState(Base *base);

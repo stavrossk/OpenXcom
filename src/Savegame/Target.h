@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -58,6 +58,8 @@ public:
 	void setLatitude(double lat);
 	/// Gets the target's name.
 	virtual std::wstring getName(Language *lang) const = 0;
+	/// Gets the target's marker.
+	virtual int getMarker() const = 0;
 	/// Gets the target's followers.
 	std::vector<Target*> *getFollowers();
 	/// Gets the distance to another target.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -82,7 +82,7 @@ namespace OpenXcom
 		graphic->getCrop()->h = 29;
 		graphic->blit(_image);
 */
-		if (ufo->getModSprite() == "")
+		if (ufo->getModSprite().empty())
 		{
 			graphic->getCrop()->y = 140 + 52 * ufo->getSprite();
 			graphic->getCrop()->h = 52;

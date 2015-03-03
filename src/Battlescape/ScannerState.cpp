@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -120,7 +120,7 @@ void ScannerState::animate()
 /**
  * Handles timers.
 */
-void ScannerState::think ()
+void ScannerState::think()
 {
 	State::think();
 	_timerAnimate->think(this, 0);

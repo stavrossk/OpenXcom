@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -66,8 +66,11 @@ public:
 	bool isBlocked(Tile *startTile, Tile *endTile, const int direction, BattleUnit *missileTarget);
 	static const int DIR_UP = 8;
 	static const int DIR_DOWN = 9;
-	enum bigWallTypes{ BLOCK = 1, BIGWALLNESW, BIGWALLNWSE, BIGWALLWEST, BIGWALLNORTH, BIGWALLEAST, BIGWALLSOUTH, BIGWALLEASTANDSOUTH};
+	enum bigWallTypes{ BLOCK = 1, BIGWALLNESW, BIGWALLNWSE, BIGWALLWEST, BIGWALLNORTH, BIGWALLEAST, BIGWALLSOUTH, BIGWALLEASTANDSOUTH, BIGWALLWESTANDNORTH};
 	static const int O_BIGWALL = -1;
+	static int red;
+	static int green;
+	static int yellow;
 	/// Creates a new Pathfinding class.
 	Pathfinding(SavedBattleGame *save);
 	/// Cleans up the Pathfinding.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -100,7 +100,7 @@ void ScannerView::mouseClick (Action *, State *)
 void ScannerView::animate()
 {
 	_frame++;
-	if(_frame > 1)
+	if (_frame > 1)
 	{
 		_frame = 0;
 	}

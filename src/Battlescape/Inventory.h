@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -53,6 +53,7 @@ private:
 	std::vector<std::pair<int, int> > _grenadeIndicators;
 	NumberText *_stackNumber;
 	Timer *_animTimer;
+	int _depth;
 	/// Moves an item to a specified slot.
 	void moveItem(BattleItem *item, RuleInventory *slot, int x, int y);
 	/// Gets the slot in the specified position.

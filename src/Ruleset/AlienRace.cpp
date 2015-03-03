@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -25,7 +25,7 @@ namespace OpenXcom
  * Creates a blank alien race.
  * @param id String defining the id.
  */
-AlienRace::AlienRace(const std::string &id) : _id(id), _members(), _retaliation(true)
+AlienRace::AlienRace(const std::string &id) : _id(id), _retaliation(true)
 {
 }
 

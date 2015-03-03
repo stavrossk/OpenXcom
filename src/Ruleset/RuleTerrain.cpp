@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -29,7 +29,7 @@ namespace OpenXcom
 /**
  * RuleTerrain construction.
  */
-RuleTerrain::RuleTerrain(const std::string &name) : _name(name), _largeBlockLimit(0), _hemisphere(0), _minDepth(0), _maxDepth(0)
+RuleTerrain::RuleTerrain(const std::string &name) : _name(name), _script("DEFAULT"), _minDepth(0), _maxDepth(0), _ambience(-1)
 {
 }
 
@@ -64,17 +64,12 @@ void RuleTerrain::load(const YAML::Node &node, Ruleset *ruleset)
 		_mapBlocks.clear();
 		for (YAML::const_iterator i = map.begin(); i != map.end(); ++i)
 		{
-			MapBlock *map = new MapBlock((*i)["name"].as<std::string>(), 0, 0, MT_DEFAULT);
-			map->load(*i);
-			_mapBlocks.push_back(map);
+			MapBlock *mapBlock = new MapBlock((*i)["name"].as<std::string>());
+			mapBlock->load(*i);
+			_mapBlocks.push_back(mapBlock);
 		}
 	}
 	_name = node["name"].as<std::string>(_name);
-	_largeBlockLimit = node["largeBlockLimit"].as<int>(_largeBlockLimit);
-	_textures = node["textures"].as< std::vector<int> >(_textures);
-	_hemisphere = node["hemisphere"].as<int>(_hemisphere);
-	_roadTypeOdds = node["roadTypeOdds"].as< std::vector<int> >(_roadTypeOdds);
-
 	if (const YAML::Node &civs = node["civilianTypes"])
 	{
 		_civilianTypes = civs.as<std::vector<std::string> >(_civilianTypes);
@@ -86,6 +81,8 @@ void RuleTerrain::load(const YAML::Node &node, Ruleset *ruleset)
 	}
 	_minDepth = node["minDepth"].as<int>(_minDepth);
 	_maxDepth = node["maxDepth"].as<int>(_maxDepth);
+	_ambience = node["ambience"].as<int>(_ambience);
+	_script = node["script"].as<std::string>(_script);
 }
 
 /**
@@ -122,29 +119,25 @@ std::string RuleTerrain::getName() const
  * @param force Whether to enforce the max size.
  * @return Pointer to the mapblock.
  */
-MapBlock* RuleTerrain::getRandomMapBlock(int maxsize, MapBlockType type, bool force)
+MapBlock* RuleTerrain::getRandomMapBlock(int maxSizeX, int maxSizeY, int group, bool force)
 {
 	std::vector<MapBlock*> compliantMapBlocks;
 
 	for (std::vector<MapBlock*>::const_iterator i = _mapBlocks.begin(); i != _mapBlocks.end(); ++i)
 	{
-		if (((force && (*i)->getSizeX() == maxsize) ||
-			(!force && (*i)->getSizeX() <= maxsize)) &&
-			((*i)->getType() == type || (*i)->getSubType() == type))
+		if (((*i)->getSizeX() == maxSizeX ||
+			(!force && (*i)->getSizeX() < maxSizeX)) &&
+			((*i)->getSizeY() == maxSizeY ||
+			(!force && (*i)->getSizeY() < maxSizeY)) &&
+			(*i)->isInGroup(group))
 		{
-			for (int j = 0; j != (*i)->getRemainingUses(); ++j)
-			{
-				compliantMapBlocks.push_back((*i));
-			}
+			compliantMapBlocks.push_back((*i));
 		}
 	}
 
 	if (compliantMapBlocks.empty()) return 0;
 
 	size_t n = RNG::generate(0, compliantMapBlocks.size() - 1);
-
-	if (type == MT_DEFAULT)
-		compliantMapBlocks[n]->markUsed();
 
 	return compliantMapBlocks[n];
 }
@@ -158,7 +151,7 @@ MapBlock* RuleTerrain::getMapBlock(const std::string &name)
 {
 	for (std::vector<MapBlock*>::const_iterator i = _mapBlocks.begin(); i != _mapBlocks.end(); ++i)
 	{
-		if((*i)->getName() == name)
+		if ((*i)->getName() == name)
 			return (*i);
 	}
 	return 0;
@@ -173,8 +166,8 @@ MapBlock* RuleTerrain::getMapBlock(const std::string &name)
 MapData *RuleTerrain::getMapData(unsigned int *id, int *mapDataSetID) const
 {
 	MapDataSet* mdf = 0;
-
-	for (std::vector<MapDataSet*>::const_iterator i = _mapDataSets.begin(); i != _mapDataSets.end(); ++i)
+	std::vector<MapDataSet*>::const_iterator i = _mapDataSets.begin();
+	for (; i != _mapDataSets.end(); ++i)
 	{
 		mdf = *i;
 		if (*id < mdf->getSize())
@@ -184,47 +177,15 @@ MapData *RuleTerrain::getMapData(unsigned int *id, int *mapDataSetID) const
 		*id -= mdf->getSize();
 		(*mapDataSetID)++;
 	}
-
-	return mdf->getObjects()->at(*id);
-}
-
-/**
- * Gets the maximum amount of large blocks in this terrain.
- * @return The maximum amount.
- */
-int RuleTerrain::getLargeBlockLimit() const
-{
-	return _largeBlockLimit;
-}
-
-/**
- * Resets the remaining uses of each mapblock.
- */
-void RuleTerrain::resetMapBlocks()
-{
-	for (std::vector<MapBlock*>::const_iterator i = _mapBlocks.begin(); i != _mapBlocks.end(); ++i)
+	if (i == _mapDataSets.end())
 	{
-		(*i)->reset();
+		// oops! someone at microprose made an error in the map!
+		// set this broken tile reference to BLANKS 0.
+		mdf = _mapDataSets.front();
+		*id = 0;
+		*mapDataSetID = 0;
 	}
-}
-
-/**
- * Gets the array of globe texture IDs this terrain is loaded on.
- * @return Pointer to the array of texture IDs.
- */
-std::vector<int> *RuleTerrain::getTextures()
-{
-	return &_textures;
-}
-
-/**
- * Gets the hemishpere this terrain occurs on.
- * -1 = northern, 0 = either, 1 = southern.
- * @return The hemisphere.
- */
-int RuleTerrain::getHemisphere() const
-{
-	return _hemisphere;
+	return mdf->getObjects()->at(*id);
 }
 
 /**
@@ -237,22 +198,38 @@ std::vector<std::string> RuleTerrain::getCivilianTypes() const
 }
 
 /**
- * Gets the road type odds.
- * @return The road type odds.
+ * Gets the min depth.
+ * @return The min depth.
  */
-std::vector<int> RuleTerrain::getRoadTypeOdds() const
-{
-	return _roadTypeOdds;
-}
-
 const int RuleTerrain::getMinDepth() const
 {
 	return _minDepth;
 }
 
+/**
+ * Gets the max depth.
+ * @return max depth.
+ */
 const int RuleTerrain::getMaxDepth() const
 {
 	return _maxDepth;
 }
 
+/**
+ * Gets The ambient sound effect.
+ * @return The ambient sound effect.
+ */
+const int RuleTerrain::getAmbience() const
+{
+	return _ambience;
+}
+
+/**
+ * Gets The generation script name.
+ * @return The name of the script to use.
+ */
+const std::string RuleTerrain::getScript()
+{
+	return _script;
+}
 }

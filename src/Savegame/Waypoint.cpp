@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -96,6 +96,15 @@ void Waypoint::setId(int id)
 std::wstring Waypoint::getName(Language *lang) const
 {
 	return lang->getString("STR_WAY_POINT_").arg(_id);
+}
+
+/**
+ * Returns the globe marker for the waypoint.
+ * @return Marker sprite, -1 if none.
+ */
+int Waypoint::getMarker() const
+{
+	return 6;
 }
 
 }

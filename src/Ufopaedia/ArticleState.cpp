@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -37,7 +37,7 @@ namespace OpenXcom
 	 * @param game Pointer to current game.
 	 * @param article_id The article id of this article state instance.
 	 */
-	ArticleState::ArticleState(std::string article_id) : _id(article_id)
+	ArticleState::ArticleState(const std::string &article_id) : _id(article_id)
 	{
 		// init background and navigation elements
 		_bg = new Surface(320, 200, 0, 0);

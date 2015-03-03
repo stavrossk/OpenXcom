@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -29,6 +29,7 @@ class Window;
 class Text;
 class TextList;
 class Base;
+class Craft;
 
 /**
  * Select Squad screen that lets the player
@@ -44,6 +45,9 @@ private:
 
 	Base *_base;
 	size_t _craft;
+	Uint8 _otherCraftColor;
+	///initializes the display list based on the craft soldier's list and the position to display
+	void initList(size_t scrl);
 public:
 	/// Creates the Craft Soldiers state.
 	CraftSoldiersState(Base *base, size_t craft);

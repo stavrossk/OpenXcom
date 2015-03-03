@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -140,6 +140,15 @@ void BattlescapeMessage::setHeight(int height)
 	Surface::setHeight(height);
 	_window->setHeight(height);
 	_text->setHeight(height);
+}
+
+/*
+ * Sets the text color of the battlescape message.
+ * @param color the new color.
+ */
+void BattlescapeMessage::setTextColor(Uint8 color)
+{
+	_text->setColor(color);
 }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -104,6 +104,17 @@ void AlienBase::setId(int id)
 std::wstring AlienBase::getName(Language *lang) const
 {
 	return lang->getString("STR_ALIEN_BASE_").arg(_id);
+}
+
+/**
+ * Returns the globe marker for the alien base.
+ * @return Marker sprite, -1 if none.
+ */
+int AlienBase::getMarker() const
+{
+	if (!_discovered)
+		return -1;
+	return 7;
 }
 
 /**

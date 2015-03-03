@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -119,7 +119,7 @@ YAML::Node AlienStrategy::save() const
 const std::string AlienStrategy::chooseRandomRegion(const Ruleset *rules)
 {
 	std::string chosen = _regionChances.choose();
-	if (chosen == "")
+	if (chosen.empty())
 	{
 		init(rules);
 		chosen = _regionChances.choose();

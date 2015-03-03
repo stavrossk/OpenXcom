@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -32,13 +32,13 @@ class Production
 {
 public:
 	Production (const RuleManufacture * rules, int amount);
-	int getAmountTotal () const;
+	int getAmountTotal() const;
 	void setAmountTotal (int);
-	bool getInfiniteAmount () const;
+	bool getInfiniteAmount() const;
 	void setInfiniteAmount (bool);
-	int getTimeSpent () const;
+	int getTimeSpent() const;
 	void setTimeSpent (int);
-	int getAmountProduced () const;
+	int getAmountProduced() const;
 	int getAssignedEngineers() const;
 	void setAssignedEngineers (int);
 	bool getSellItems() const;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -130,30 +130,19 @@ void CraftWeapon::setRearming(bool rearming)
  */
 int CraftWeapon::rearm(const int available, const int clipSize)
 {
-	int used = 0;
+	int ammoUsed = _rules->getRearmRate();
 
 	if (clipSize > 0)
-	{
-		const int needed = std::max(1, (_rules->getAmmoMax() - _ammo) / clipSize);
-		used = std::min(_rules->getRearmRate() / clipSize, needed);
+	{	// +(clipSize - 1) correction for rounding up
+		int needed = std::min(_rules->getRearmRate(), _rules->getAmmoMax() - _ammo + clipSize - 1) / clipSize;
+		ammoUsed = ((needed > available)? available : needed) * clipSize;
 	}
 
-	if (available >= used)
-	{
-		setAmmo(_ammo + _rules->getRearmRate());
-	}
-	else
-	{
-		setAmmo(_ammo + (clipSize * available));
-	}
+	setAmmo(_ammo + ammoUsed);
 
-	if (_ammo >= _rules->getAmmoMax())
-	{
-		_ammo = _rules->getAmmoMax();
-		_rearming = false;
-	}
+	_rearming = _ammo < _rules->getAmmoMax();
 
-	return used;
+	return (clipSize <= 0)? 0 : ammoUsed / clipSize;
 }
 
 /*

@@ -1,5 +1,5 @@
 	/*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -95,8 +95,8 @@ public:
 	int getCursorLeftBlackBand() const;
 	/// Takes a screenshot.
 	void screenshot(const std::string &filename) const;
-	/// Checks whether HQX is requested and works for the selected resolution
-	static bool isHQXEnabled();
+	/// Checks whether a 32bit scaler is requested and works for the selected resolution
+	static bool is32bitEnabled();
 	/// Checks whether OpenGL output is requested
 	static bool isOpenGLEnabled();
 	/// update the game scale as required.

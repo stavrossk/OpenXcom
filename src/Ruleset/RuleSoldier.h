@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -36,7 +36,7 @@ private:
 	std::string _type;
 	UnitStats _minStats, _maxStats, _statCaps;
 	std::string _armor;
-	int _standHeight, _kneelHeight, _floatHeight;
+	int _standHeight, _kneelHeight, _floatHeight, _femaleFrequency;
 public:
 	/// Creates a blank unit ruleset.
 	RuleSoldier(const std::string &type);
@@ -60,6 +60,8 @@ public:
 	int getFloatHeight() const;
 	/// Gets the armor name.
 	std::string getArmor() const;
+	/// Gets the female appearance ratio.
+	int getFemaleFrequency() const;
 
 };
 

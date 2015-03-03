@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 OpenXcom Developers.
+ * Copyright 2010-2015 OpenXcom Developers.
  *
  * This file is part of OpenXcom.
  *
@@ -69,11 +69,11 @@ private:
 	/// Drawing routine for hallucinoids (routine 12) and biodrones (routine 15).
 	void drawRoutine12();
 	/// Drawing routine for tentaculats.
-	void drawRoutine18();
-	/// Drawing routine for triscenes.
 	void drawRoutine19();
-	/// Drawing routine for xarquids.
+	/// Drawing routine for triscenes.
 	void drawRoutine20();
+	/// Drawing routine for xarquids.
+	void drawRoutine21();
 	/// sort two handed sprites out.
 	void sortRifles();
 public:
